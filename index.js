@@ -49,11 +49,14 @@ bot.on('message', async (message) => {
     // 文字内容
     const text = message.text()
     // console.log(room, 1, from, 2, mentionSelf, 3, text)
-    // console.log(room, 1, from, 2, mentionSelf, 3, text)
-    console.log(`[${room ? room.payload.topic : ''}]:${from.payload.name}:${text}`)
-    if (room != null && room.id == roomId && from.id != fromId || room == null && from.id == fromUserId && from.id != fromId) {
+    console.log(`[${room ? room.payload.topic : ''}]:${from.payload.name}:${text.substr(0,50)}`)
+    if (room != null && room.id == roomId && from.id != fromId) {
         let [info] = await getInfo(text);
         let texts = info.resultType == 'text' ? info.values.text : '你猜我知不知道'
         await room.say(texts)
+    // } else if (room == null && from.id == fromUserId && from.id != fromId) {
+    //     let [info] = await getInfo(text);
+    //     let texts = info.resultType == 'text' ? info.values.text : '你猜我知不知道'
+    //     await from.say(texts)
     }
 })
