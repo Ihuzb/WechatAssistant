@@ -1,5 +1,5 @@
 const {Wechaty} = require('wechaty');
-const getInfo = require('./info');
+const tuLing = require('./api/tuLing');
 
 const name = 'wechat-puppet-wechat';
 let bot = '';
