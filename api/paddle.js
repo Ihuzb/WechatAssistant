@@ -2,6 +2,8 @@ const axios = require('axios');
 const {api} = require('../config/index')
 const path = require('path');
 const QueryLinesReader = require('query-lines-reader');
+let headers = {"Content-type": "application/json"}
+
 module.exports = {
     gushi: () => {
         let queryLinesReader = new QueryLinesReader(path.resolve(__dirname, '../files/train.tsv'));
@@ -24,7 +26,6 @@ module.exports = {
                 'texts': info,
                 'use_gpu': false, 'beam_width': 5
             }
-            let headers = {"Content-type": "application/json"}
             let url = `${api}:8866/predict/ernie_gen_poetry`
             axios.post(url, data, {
                 headers
@@ -33,6 +34,15 @@ module.exports = {
                 console.log(res.data.results)
             })
         })
-
+    },
+    boot: (text) => {
+        let url = `${api}:8866/predict/plato-mini`
+        return new Promise((re, rs) => {
+            axios.post(url, {"data": [[text]]}, {
+                headers
+            }).then(res => {
+                re(res.data.results)
+            })
+        })
     }
 }
