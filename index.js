@@ -34,6 +34,7 @@ function onLogout(user) {
     console.log(`小助手${user} 已经登出`);
 }
 
+
 bot.on('scan', onScan);
 bot.on('login', onLogin);
 bot.on('logout', onLogout);
