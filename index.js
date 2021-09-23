@@ -50,7 +50,12 @@ bot.on('message', async (message) => {
     // 文字内容
     const text = message.text()
     // console.log(room, 1, from, 2, mentionSelf, 3, text)
-    console.log(`[${room ? room.payload.topic : ''}]:${from.payload.name}:${text.substr(0, 50)}`)
+    // console.log(`[${room ? room.payload.topic : ''}]:${from.payload.name}:${text.substr(0, 50)}`)
+    if (room != null) {
+        console.log(`[${room.id}:${room.payload.topic}]:${from.payload.name}:${text.substr(0, 50)}`)
+    } else {
+        console.log(`[${from.id}]:${from.payload.name}:${text.substr(0, 50)}`)
+    }
     if (room != null && room.id == roomId && mentionSelf) {
         let [info] = await boot(text);
         let texts = info || '你猜我知不知道'
