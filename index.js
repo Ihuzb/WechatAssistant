@@ -9,7 +9,7 @@ bot = new Wechaty({
 });
 // let roomId = '@@48f2bb76660835b634b810362e608683bdfc781dd9dd04688206e7d5924971d9'
 let roomId = '@@ab17a0c49c9b1459244e5f4db327b0a3dacbb7ab5b23e8fdd092507ce1746bc2'
-let fromId = '@2850ad8f6860ed9df95e8a3858bc65321060d4c6b3f51ea1f2215b71398b5ecc'
+let fromId = ['@2850ad8f6860ed9df95e8a3858bc65321060d4c6b3f51ea1f2215b71398b5ecc', '@8185207bea534b9d589aea1cd8519f07d4af4da3a1813caf87dccf35667023a5']
 
 //  二维码生成
 function onScan(qrcode, status) {
@@ -60,7 +60,7 @@ bot.on('message', async (message) => {
         let [info] = await boot(text);
         let texts = info || '你猜我知不知道'
         await room.say(texts)
-    } else if (room == null && from.id == fromId) {
+    } else if (room == null && fromId.includes(from.id)) {
         let [info] = await boot(text);
         let texts = info || '你猜我知不知道'
         await from.say(texts)
