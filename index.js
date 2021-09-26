@@ -8,8 +8,8 @@ bot = new Wechaty({
     name, // generate xxxx.memory-card.json and save login data for the next login
 });
 // let roomId = '@@48f2bb76660835b634b810362e608683bdfc781dd9dd04688206e7d5924971d9'
-let roomId = '@@ab17a0c49c9b1459244e5f4db327b0a3dacbb7ab5b23e8fdd092507ce1746bc2'
-let fromId = ['@2850ad8f6860ed9df95e8a3858bc65321060d4c6b3f51ea1f2215b71398b5ecc', '@8185207bea534b9d589aea1cd8519f07d4af4da3a1813caf87dccf35667023a5']
+let roomId = []
+let fromId = []
 
 //  二维码生成
 function onScan(qrcode, status) {
@@ -56,13 +56,32 @@ bot.on('message', async (message) => {
     } else {
         console.log(`[${from.id}]:${from.payload.name}:${text.substr(0, 50)}`)
     }
-    if (room != null && room.id == roomId && mentionSelf) {
-        let [info] = await boot(text);
-        let texts = info || '你猜我知不知道'
-        await room.say(texts)
-    } else if (room == null && fromId.includes(from.id)) {
-        let [info] = await boot(text);
-        let texts = info || '你猜我知不知道'
-        await from.say(texts)
+    if (text == '阿瓦达啃大瓜') {
+        if (room == null) {
+            fromId.push(from.id);
+            await from.say("Avada Kedavra")
+        } else if (mentionSelf) {
+            roomId.push(room.id);
+            await room.say("Avada Kedavra")
+        }
+    } else if (text == '除你武器') {
+        if (room == null) {
+            fromId = fromId.filter(v => v != from.id);
+            await from.say("Expelliarmus")
+        } else if (mentionSelf) {
+            roomId = roomId.filter(v => v != room.id);
+            await room.say("Expelliarmus")
+        }
+    } else {
+        if (room != null && roomId.includes(room.id) && mentionSelf) {
+            let [info] = await boot(text);
+            let texts = info || '你猜我知不知道'
+            await room.say(texts)
+        } else if (room == null && fromId.includes(from.id)) {
+            let [info] = await boot(text);
+            let texts = info || '你猜我知不知道'
+            await from.say(texts)
+        }
     }
+
 })
